@@ -1,4 +1,4 @@
-package ez
+package json
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-func FromJSONBytes[T any](body []byte) (*T, error) {
+func FromBytes[T any](body []byte) (*T, error) {
 	out := new(T)
 
 	if err := json.Unmarshal(body, out); err != nil {
@@ -16,7 +16,7 @@ func FromJSONBytes[T any](body []byte) (*T, error) {
 	return out, nil
 }
 
-func FromJSONReader[T any](body io.ReadCloser) (*T, error) {
+func FromReader[T any](body io.ReadCloser) (*T, error) {
 	defer body.Close()
 	out := new(T)
 
@@ -27,7 +27,7 @@ func FromJSONReader[T any](body io.ReadCloser) (*T, error) {
 	return out, nil
 }
 
-func ToJSONReader(body any) (io.Reader, error) {
+func ToBuffer(body any) (*bytes.Buffer, error) {
 	buf := bytes.NewBuffer([]byte{})
 
 	if err := json.NewEncoder(buf).Encode(body); err != nil {
